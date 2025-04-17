@@ -70,11 +70,28 @@ export class ScheduleManager {
      * @param guildId Optional Discord guild ID
      */
     getDiscordChannelSchedules(channelId: string, guildId?: string): ScheduleConfig[] {
-        return this.schedules.filter(
-            (schedule) =>
+        // Log for debugging channel association
+        console.log(`Looking for schedules with channelId: ${channelId}, guildId: ${guildId || "any"}`);
+
+        const matchingSchedules = this.schedules.filter((schedule) => {
+            const matches =
                 schedule.discord?.channelId === channelId &&
-                (!guildId || schedule.discord?.guildId === guildId || !schedule.discord?.guildId)
-        );
+                (!guildId || schedule.discord?.guildId === guildId || !schedule.discord?.guildId);
+
+            // Log each schedule we examine for debugging
+            if (schedule.discord) {
+                console.log(
+                    `Schedule ${schedule.id} - channel: ${schedule.discord.channelId}, guild: ${
+                        schedule.discord.guildId || "none"
+                    }, matches: ${matches}`
+                );
+            }
+
+            return matches;
+        });
+
+        console.log(`Found ${matchingSchedules.length} matching schedules for channel ${channelId}`);
+        return matchingSchedules;
     }
 
     /**
