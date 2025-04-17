@@ -1,0 +1,22 @@
+{
+  "schedules": [
+    {
+      "id": "discord-1744924100373-319",
+      "name": "nft every 6 hours",
+      "cronExpression": "0 */6 * * *",
+      "enabled": true,
+      "fetchType": "nft",
+      "createdAt": 1744924100373,
+      "createdBy": {
+        "platform": "discord",
+        "userId": "341442513007149067",
+        "username": "skullzarmy"
+      },
+      "discord": {
+        "channelId": "1207785570881896518",
+        "guildId": "1193476331556573274"
+      }
+    }
+  ],
+  "version": 1
+}
