@@ -4,8 +4,8 @@ import { ScheduleManager } from "../../utils/schedule-manager";
 import { SchedulerService } from "../../services/scheduler";
 import { FetchType } from "../../types";
 
-// Create a singleton instance of the schedule manager
-const scheduleManager = new ScheduleManager();
+// Get the singleton instance of the schedule manager
+const scheduleManager = ScheduleManager.getInstance();
 
 /**
  * Register schedule commands with a Telegram bot

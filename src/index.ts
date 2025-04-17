@@ -17,7 +17,7 @@ async function main() {
         console.log("Initializing services...");
         const apiService = new ApiService();
         const schedulerService = new SchedulerService(apiService);
-        const scheduleManager = new ScheduleManager();
+        const scheduleManager = ScheduleManager.getInstance();
 
         // Initialize bots
         console.log("Initializing bots...");
