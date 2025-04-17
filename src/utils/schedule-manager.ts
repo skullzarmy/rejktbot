@@ -9,7 +9,18 @@ const SCHEDULES_FILE_PATH = path.join(process.cwd(), "schedules.json");
  * Utility for managing schedule configurations
  */
 export class ScheduleManager {
+    private static instance: ScheduleManager;
     private schedules: ScheduleConfig[] = [];
+
+    /**
+     * Get the singleton instance
+     */
+    public static getInstance(): ScheduleManager {
+        if (!ScheduleManager.instance) {
+            ScheduleManager.instance = new ScheduleManager();
+        }
+        return ScheduleManager.instance;
+    }
 
     /**
      * Load schedules from the configuration file

@@ -11,8 +11,8 @@ import { ScheduleManager } from "../../utils/schedule-manager";
 import { SchedulerService } from "../../services/scheduler";
 import { FetchType } from "../../types";
 
-// Create a singleton instance of the schedule manager
-const scheduleManager = new ScheduleManager();
+// Get the singleton instance of the schedule manager
+const scheduleManager = ScheduleManager.getInstance();
 
 // Build the command using SlashCommandBuilder
 // Export this as 'data' for Discord.js to recognize it
