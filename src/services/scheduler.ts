@@ -73,6 +73,14 @@ export class SchedulerService {
             return;
         }
 
+        // Log the channel info for debugging
+        if (schedule.discord?.channelId) {
+            console.log(`Adding schedule "${schedule.name}" for Discord channel: ${schedule.discord.channelId}`);
+        }
+        if (schedule.telegram?.chatId) {
+            console.log(`Adding schedule "${schedule.name}" for Telegram chat: ${schedule.telegram.chatId}`);
+        }
+
         try {
             const task = cron.schedule(schedule.cronExpression, async () => {
                 try {
