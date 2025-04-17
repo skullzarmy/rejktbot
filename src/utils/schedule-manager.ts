@@ -73,16 +73,24 @@ export class ScheduleManager {
         // Log for debugging channel association
         console.log(`Looking for schedules with channelId: ${channelId}, guildId: ${guildId || "any"}`);
 
+        // Convert IDs to strings to ensure consistent comparison
+        const channelIdStr = String(channelId);
+        const guildIdStr = guildId ? String(guildId) : undefined;
+
         const matchingSchedules = this.schedules.filter((schedule) => {
+            // Convert schedule channel IDs to strings for comparison
+            const scheduleChannelId = schedule.discord?.channelId ? String(schedule.discord.channelId) : "";
+            const scheduleGuildId = schedule.discord?.guildId ? String(schedule.discord.guildId) : undefined;
+
             const matches =
-                schedule.discord?.channelId === channelId &&
-                (!guildId || schedule.discord?.guildId === guildId || !schedule.discord?.guildId);
+                scheduleChannelId === channelIdStr &&
+                (!guildIdStr || scheduleGuildId === guildIdStr || !scheduleGuildId);
 
             // Log each schedule we examine for debugging
             if (schedule.discord) {
                 console.log(
-                    `Schedule ${schedule.id} - channel: ${schedule.discord.channelId}, guild: ${
-                        schedule.discord.guildId || "none"
+                    `Schedule ${schedule.id} - channel: ${scheduleChannelId}, guild: ${
+                        scheduleGuildId || "none"
                     }, matches: ${matches}`
                 );
             }
