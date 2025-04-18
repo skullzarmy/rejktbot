@@ -87,14 +87,18 @@ export class ApiService {
             const artist = artistResponse.artist;
             const sampleListing = artistResponse.sampleListing;
 
-            // Create a formatted ArtistData object from the response
+            // Create a formatted ArtistData object from the response, prioritizing artist details
             const artistData: ArtistData = {
                 id: artist.address,
                 name: artist.alias || "Unknown Artist",
                 address: artist.address,
-                bio: sampleListing.token.description || undefined,
-                imageUrl: this.ipfsToHttp(sampleListing.token.display_uri),
-                profileLink: artistResponse.profileLink, // Add the profile link from the response
+                bio: undefined, // We'll add artist description when API provides it
+                imageUrl: artist.logo ? this.ipfsToHttp(artist.logo) : this.ipfsToHttp(sampleListing.token.display_uri),
+                profileLink: artistResponse.profileLink,
+                website: artist.website || undefined,
+                twitter: artist.twitter || undefined,
+                tzdomain: artist.tzdomain || undefined,
+                telegram: artist.telegram || undefined,
                 token: sampleListing.token,
                 sampleListing: sampleListing,
             };

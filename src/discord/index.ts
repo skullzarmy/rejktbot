@@ -154,7 +154,8 @@ export class DiscordBot implements MessageSender {
                     const embed = {
                         color: 0x6441a4, // Purple color for artist embeds
                         title: `🎨 ${data.name}`,
-                        description: data.bio ? data.bio.substring(0, 2000) : undefined,
+                        // Add wallet address to description instead of reusing bio
+                        description: `Wallet: ${data.address}`,
                         thumbnail: {
                             url: "https://rejkt.xyz/logo.png", // Optional: Add your service logo as a thumbnail
                         },
@@ -163,12 +164,54 @@ export class DiscordBot implements MessageSender {
                                   url: data.imageUrl,
                               }
                             : null,
-                        fields: [],
+                        fields: [] as { name: string; value: string; inline: boolean }[],
                         footer: {
                             text: "REJKT Bot • Artist Showcase",
                         },
                         timestamp: new Date(),
                     };
+
+                    // Add links as fields
+                    if (data.website) {
+                        embed.fields.push({
+                            name: "Website",
+                            value: data.website,
+                            inline: true,
+                        });
+                    }
+
+                    if (data.twitter) {
+                        embed.fields.push({
+                            name: "Twitter",
+                            value: data.twitter,
+                            inline: true,
+                        });
+                    }
+
+                    if (data.tzdomain) {
+                        embed.fields.push({
+                            name: "TZ Domain",
+                            value: data.tzdomain,
+                            inline: true,
+                        });
+                    }
+
+                    if (data.telegram) {
+                        embed.fields.push({
+                            name: "Telegram",
+                            value: data.telegram,
+                            inline: true,
+                        });
+                    }
+
+                    // Add bio as a separate field if available (as fallback)
+                    if (data.bio) {
+                        embed.fields.push({
+                            name: "Recent Work",
+                            value: data.bio.length > 500 ? data.bio.substring(0, 500) + "..." : data.bio,
+                            inline: false,
+                        });
+                    }
 
                     // Create action button using component
                     const row = {

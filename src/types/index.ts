@@ -102,6 +102,10 @@ export interface ArtistData {
     bio?: string;
     imageUrl?: string;
     profileLink?: string; // Link to view artist on REJKT
+    website?: string;
+    twitter?: string;
+    tzdomain?: string;
+    telegram?: string;
     token?: Token;
     sampleListing?: Listing;
 }

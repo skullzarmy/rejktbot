@@ -175,10 +175,37 @@ export class TelegramBot implements MessageSender {
     private formatArtistCaption(data: any): string {
         let caption = `<b>🎨 ${this.escapeHTML(data.name)}</b>\n\n`;
 
+        // Add wallet address
+        caption += `<b>Wallet:</b> ${this.escapeHTML(data.address)}\n\n`;
+
+        // Add links section if any social media or websites are available
+        if (data.website || data.twitter || data.tzdomain || data.telegram) {
+            caption += `<b>Links:</b>\n`;
+
+            if (data.website) {
+                caption += `• Website: ${this.escapeHTML(data.website)}\n`;
+            }
+
+            if (data.twitter) {
+                caption += `• Twitter: ${this.escapeHTML(data.twitter)}\n`;
+            }
+
+            if (data.tzdomain) {
+                caption += `• TZ Domain: ${this.escapeHTML(data.tzdomain)}\n`;
+            }
+
+            if (data.telegram) {
+                caption += `• Telegram: ${this.escapeHTML(data.telegram)}\n`;
+            }
+
+            caption += "\n";
+        }
+
+        // Use bio as fallback if available
         if (data.bio) {
             // Limit bio to reasonable length for Telegram
-            const bioText = data.bio.length > 800 ? data.bio.substring(0, 800) + "..." : data.bio;
-            caption += `${this.escapeHTML(bioText)}\n\n`;
+            const bioText = data.bio.length > 500 ? data.bio.substring(0, 500) + "..." : data.bio;
+            caption += `<b>Recent Work:</b>\n${this.escapeHTML(bioText)}\n\n`;
         }
 
         caption += `<i>REJKT Bot • Artist Showcase • ${new Date().toLocaleDateString()}</i>`;
