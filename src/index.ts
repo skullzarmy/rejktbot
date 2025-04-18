@@ -19,6 +19,10 @@ async function main() {
         const schedulerService = new SchedulerService(apiService);
         const scheduleManager = ScheduleManager.getInstance();
 
+        // Load existing schedules
+        console.log("Loading saved schedules...");
+        await scheduleManager.loadSchedules();
+
         // Initialize bots
         console.log("Initializing bots...");
         const discordBot = new DiscordBot(apiService);
@@ -31,6 +35,12 @@ async function main() {
         // Set scheduler service in bots for command handling
         discordBot.setSchedulerService(schedulerService);
         telegramBot.setSchedulerService(schedulerService);
+
+        // Get enabled schedules and add them to the scheduler
+        console.log("Activating saved schedules...");
+        const enabledSchedules = scheduleManager.getEnabledSchedules();
+        schedulerService.addScheduledTasks(enabledSchedules);
+        console.log(`Activated ${enabledSchedules.length} saved schedules`);
 
         // Start the bots
         console.log("Starting bots...");
