@@ -82,7 +82,11 @@ export class SchedulerService {
         }
 
         try {
+            // Explicitly set the task to start immediately
             const task = cron.schedule(schedule.cronExpression, async () => {
+                console.log(
+                    `⏰ Executing scheduled task "${schedule.name}" (${schedule.id}) at ${new Date().toISOString()}`
+                );
                 try {
                     let data;
                     let message = "";

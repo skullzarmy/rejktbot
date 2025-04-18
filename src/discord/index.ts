@@ -345,7 +345,7 @@ export class DiscordBot implements MessageSender {
     async sendMessage(content: string, channelId: string): Promise<void> {
         if (!this.ready) {
             console.error("Discord bot not ready");
-            return;
+            throw new Error("Discord bot not ready");
         }
 
         try {
@@ -354,7 +354,7 @@ export class DiscordBot implements MessageSender {
             // Check if channel exists and is a text-based channel
             if (!channel) {
                 console.error(`Channel not found: ${channelId}`);
-                return;
+                throw new Error(`Discord channel not found: ${channelId}`);
             }
 
             if (
@@ -363,13 +363,14 @@ export class DiscordBot implements MessageSender {
                 channel.type !== ChannelType.GuildAnnouncement
             ) {
                 console.error(`Channel ${channelId} is not a text channel`);
-                return;
+                throw new Error(`Discord channel ${channelId} is not a text channel`);
             }
 
             // Now TypeScript knows this is a text-based channel that can send messages
             await (channel as TextChannel).send({ content });
         } catch (error) {
             console.error("Error sending message to Discord:", error);
+            throw error; // Re-throw the error so the caller knows the send failed
         }
     }
 }

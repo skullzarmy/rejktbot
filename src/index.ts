@@ -40,7 +40,18 @@ async function main() {
         console.log("Activating saved schedules...");
         const enabledSchedules = scheduleManager.getEnabledSchedules();
         schedulerService.addScheduledTasks(enabledSchedules);
-        console.log(`Activated ${enabledSchedules.length} saved schedules`);
+        console.log(
+            `Activated ${enabledSchedules.length} saved schedules with details:`,
+            enabledSchedules.map((s) => ({
+                id: s.id,
+                name: s.name,
+                type: s.fetchType,
+                cron: s.cronExpression,
+                enabled: s.enabled,
+                discord: s.discord?.channelId,
+                telegram: s.telegram?.chatId,
+            }))
+        );
 
         // Start the bots
         console.log("Starting bots...");
@@ -51,10 +62,8 @@ async function main() {
             console.log("Continuing with available bots...");
         }
 
-        // Load and set up scheduled tasks
-        console.log("Setting up scheduled tasks...");
-        const schedules = await scheduleManager.loadSchedules();
-        schedulerService.addScheduledTasks(schedules);
+        // Remove duplicate schedule loading - this was causing issues
+        // as it was loading schedules twice
 
         console.log("Bot is now running. Press CTRL+C to exit.");
 
