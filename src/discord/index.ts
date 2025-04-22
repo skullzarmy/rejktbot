@@ -154,8 +154,8 @@ export class DiscordBot implements MessageSender {
                     const embed = {
                         color: 0x6441a4, // Purple color for artist embeds
                         title: `🎨 ${data.name}`,
-                        // Add wallet address to description instead of reusing bio
-                        description: `Wallet: ${data.address}`,
+                        // description: Wallet is now a field, so description can be omitted or left blank
+                        description: undefined,
                         thumbnail: {
                             url: "https://rejkt.xyz/logo.png", // Optional: Add your service logo as a thumbnail
                         },
@@ -171,6 +171,10 @@ export class DiscordBot implements MessageSender {
                         timestamp: new Date(),
                     };
 
+                    // Add wallet as a field for artist
+                    if (data.address) {
+                        embed.fields.push({ name: "Wallet", value: data.address, inline: true });
+                    }
                     // Add links as fields
                     if (data.website) {
                         embed.fields.push({
