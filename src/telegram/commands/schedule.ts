@@ -10,14 +10,12 @@ import { FetchType } from "../../types";
  */
 function parseCommandArguments(text: string): string[] {
     const args: string[] = [];
+    // match quoted strings or standalone tokens
     const pattern = /"([^"]+)"|(\S+)/g;
     let match: RegExpExecArray | null;
     while ((match = pattern.exec(text)) !== null) {
-        if (match[1] !== undefined) {
-            args.push(match[1]);
-        } else if (match[2] !== undefined) {
-            args.push(match[2]);
-        }
+        if (match[1] !== undefined) args.push(match[1]);
+        else if (match[2] !== undefined) args.push(match[2]);
     }
     return args;
 }
@@ -48,9 +46,14 @@ export function registerScheduleCommands(bot: Telegraf, schedulerService: Schedu
     bot.help((ctx) => {
         return ctx.reply(
             "Schedule Commands:\n" +
-                "  /schedule_create [artist|nft] [frequency or cron] [name]\n" +
+                "Note: quote any multi-word frequency or cron expression.\n" +
+                "  /schedule_create <artist|nft> <frequency or cron> <name>\n" +
+                "\n" +
+                "Example: post a random artist every day at noon:\n" +
+                '  /schedule_create artist daily "Daily Artist"\n' +
                 "    Examples:\n" +
                 '      /schedule_create artist daily "Daily Artist"\n' +
+                '      /schedule_create artist every day "Daily Artist"\n' +
                 '      /schedule_create nft every 15 minutes "Quick NFT"\n' +
                 '      /schedule_create artist "0 8 * * 1-5" "Weekday Morning"\n' +
                 "  /schedule_list - Show all schedules in this chat\n" +
@@ -84,9 +87,10 @@ async function handleCreateSchedule(ctx: Context, schedulerService: SchedulerSer
     // Check for type parameter
     if (args.length < 1) {
         return ctx.reply(
-            "Usage: /schedule_create [artist|nft] [frequency or cron] [name]\n\n" +
+            "Usage: /schedule_create <artist|nft> <frequency or cron> <name>\n\n" +
                 "Examples:\n" +
                 '  /schedule_create artist daily "Daily Artist"\n' +
+                '  /schedule_create artist every day "Daily Artist"\n' +
                 '  /schedule_create nft every 15 minutes "Quick NFT"\n' +
                 '  /schedule_create artist "0 8 * * 1-5" "Weekday Morning"\n\n' +
                 "Frequency options:\n" +
