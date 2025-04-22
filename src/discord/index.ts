@@ -260,12 +260,27 @@ export class DiscordBot implements MessageSender {
                     };
 
                     // Add seller information if available
-                    if (data.seller && data.seller.alias) {
-                        embed.fields.push({
-                            name: "Creator",
-                            value: data.seller.alias,
-                            inline: true,
-                        });
+                    if (data.seller) {
+                        if (data.seller.alias) {
+                            embed.fields.push({ name: "Creator", value: data.seller.alias, inline: true });
+                        }
+                        // Add seller wallet
+                        if (data.seller.address) {
+                            embed.fields.push({ name: "Wallet", value: data.seller.address, inline: true });
+                        }
+                        // Add seller social and website links
+                        if (data.seller.website) {
+                            embed.fields.push({ name: "Website", value: data.seller.website, inline: true });
+                        }
+                        if (data.seller.twitter) {
+                            embed.fields.push({ name: "Twitter", value: data.seller.twitter, inline: true });
+                        }
+                        if (data.seller.tzdomain) {
+                            embed.fields.push({ name: "TZ Domain", value: data.seller.tzdomain, inline: true });
+                        }
+                        if (data.seller.telegram) {
+                            embed.fields.push({ name: "Telegram", value: data.seller.telegram, inline: true });
+                        }
                     }
 
                     // Create action button using component

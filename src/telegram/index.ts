@@ -230,6 +230,20 @@ export class TelegramBot implements MessageSender {
             caption += `<b>Price:</b> ${this.escapeHTML(data.price)}\n\n`;
         }
 
+        // Add seller info if available
+        if (data.seller) {
+            caption += `<b>Creator:</b> ${this.escapeHTML(data.seller.alias)}\n`;
+            caption += `<b>Wallet:</b> ${this.escapeHTML(data.seller.address)}\n\n`;
+            if (data.seller.website || data.seller.twitter || data.seller.tzdomain || data.seller.telegram) {
+                caption += `<b>Links:</b>\n`;
+                if (data.seller.website) caption += `• Website: ${this.escapeHTML(data.seller.website)}\n`;
+                if (data.seller.twitter) caption += `• Twitter: ${this.escapeHTML(data.seller.twitter)}\n`;
+                if (data.seller.tzdomain) caption += `• TZ Domain: ${this.escapeHTML(data.seller.tzdomain)}\n`;
+                if (data.seller.telegram) caption += `• Telegram: ${this.escapeHTML(data.seller.telegram)}\n`;
+                caption += `\n`;
+            }
+        }
+
         caption += `<i>REJKT Bot • NFT Showcase • ${new Date().toLocaleDateString()}</i>`;
 
         return caption;
